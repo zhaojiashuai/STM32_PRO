@@ -2,58 +2,68 @@
  * @Author: PLUS-ZHAO
  * @Date: 2023-06-29 23:19:37
  * @LastEditors: PLUS-ZHAO
- * @LastEditTime: 2023-06-29 23:19:55
- * @FilePath: \test\task.c
- * @Description: 
- * 
- * Copyright (c) 2023 by ${PLUS-ZHAO}, All Rights Reserved. 
+ * @LastEditTime: 2023-07-16 15:49:35
+ * @FilePath: \test\task1.c
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${PLUS-ZHAO}, All Rights Reserved.
  */
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef void (*TaskFunction)();  // 定义任务函数指针类型
+typedef void (*TaskFunction)(); // 定义任务函数指针类型
 
 // 任务结构体
-typedef struct {
-    TaskFunction func;  // 任务函数指针
-    unsigned int interval;  // 任务执行间隔时间
-    unsigned int elapsed_time;  // 任务已经过去的时间
+typedef struct
+{
+    TaskFunction func;         // 任务函数指针
+    unsigned int interval;     // 任务执行间隔时间
+    unsigned int elapsed_time; // 任务已经过去的时间
 } Task;
 
-Task tasks[10];  // 定义任务数组
-int num_tasks = 0;  // 当前任务数量
+Task tasks[10];    // 定义任务数组
+int num_tasks = 0; // 当前任务数量
 
-void add_task(TaskFunction func, unsigned int interval) {
-    if (num_tasks >= sizeof(tasks) / sizeof(tasks[0])) {
+void add_task(TaskFunction func, unsigned int interval)
+{
+    if (num_tasks >= sizeof(tasks) / sizeof(tasks[0]))
+    {
         printf("Too many tasks, cannot add more!\n");
         return;
     }
-    
+
     tasks[num_tasks].func = func;
     tasks[num_tasks].interval = interval;
     tasks[num_tasks].elapsed_time = 0;
     num_tasks++;
 }
 
-void remove_task(int index) {
-    if (index >= num_tasks) {
+void remove_task(int index)
+{
+    if (index >= num_tasks)
+    {
         printf("Invalid task index!\n");
         return;
     }
-    
-    for (int i = index; i < num_tasks - 1; i++) {
-        tasks[i] = tasks[i+1];
+
+    for (int i = index; i < num_tasks - 1; i++)
+    {
+        tasks[i] = tasks[i + 1];
     }
-    
+
     num_tasks--;
 }
 
-void run_tasks() {
-    while (1) {
-        for (int i = 0; i < num_tasks; i++) {
+void run_tasks()
+{
+    while (1)
+    {
+        for (int i = 0; i < num_tasks; i++)
+        {
             tasks[i].elapsed_time++;
-            
-            if (tasks[i].elapsed_time >= tasks[i].interval) {
+
+            if (tasks[i].elapsed_time >= tasks[i].interval)
+            {
                 tasks[i].func();
                 tasks[i].elapsed_time = 0;
             }
@@ -62,20 +72,23 @@ void run_tasks() {
 }
 
 // 以下是示例任务函数
-void task1() {
+void task1()
+{
     printf("Task 1 executed!\n");
 }
 
-void task2() {
+void task2()
+{
     printf("Task 2 executed!\n");
 }
 
-int main() {
+int main()
+{
     add_task(task1, 100);
     add_task(task2, 200);
-    
-    run_tasks();  // 开始任务调度
-    
+
+    run_tasks(); // 开始任务调度
+
     return 0;
 }
 
